@@ -38,6 +38,7 @@ COVER_STYLE    = E("COVER_STYLE") or ("cinematic isometric digital illustration,
                   "chain, containers, cranes, glowing data network lines, deep navy and teal palette with "
                   "orange accents, dusk lighting, highly detailed")
 ACCENT         = E("BRAND_COLOR") or "#FF7A45"
+AI_TWIN        = (E("HOST_B_IS_CREATOR") or "no").lower() in ("yes", "true", "1", "oui")
 LINKS = [(name, (E(var) or "").strip()) for name, var in [
     ("LinkedIn", "LINK_LINKEDIN"), ("Newsletter (beehiiv)", "LINK_BEEHIIV"), ("Substack", "LINK_SUBSTACK"),
     ("Spotify", "LINK_SPOTIFY"), ("Apple Podcasts", "LINK_APPLE"), ("YouTube", "LINK_YOUTUBE")]]
@@ -124,13 +125,22 @@ def next_topic(db):
 # ------------------------------------------------------------------ script
 def write_script(topic, notes, n):
     words = MINUTES * 150
+    if AI_TWIN:
+        hosts = f"""- {HOST_A}: AI co-host, curious, warm, asks the questions listeners would ask, uses concrete everyday analogies.
+- {HOST_B}: the AI voice of Rachid Ait Bouale, the show's creator ({CREATOR_BIO}). Speaks Rachid's notes in the first person
+  ("in my experience...", "what I see in my research..."). Never claims to be the real human Rachid speaking live.
+- In the opening lines, {HOST_A} must say clearly that {HOST_B} is "Rachid's AI voice, built from his own notes and research"."""
+        notes_label = f"{HOST_B}'s own notes and angle (the core of the episode; {HOST_B} presents them in the first person)"
+    else:
+        hosts = f"""- {HOST_A}: curious, warm, asks the questions listeners would ask, uses concrete everyday analogies.
+- {HOST_B}: sharp practitioner, explains with real industry examples (manufacturing, ports, ERP/SAP, quality, maintenance)."""
+        notes_label = 'Rachid\'s own notes and angle (the core of the episode; attribute them as "Rachid\'s take" or "Rachid\'s experience")'
     prompt = f"""You are the head writer of the podcast "{TITLE}", created and curated by {CREATOR_BIO}.
 Write episode {n} as a natural, unscripted-sounding conversation in {LANG_NAME[LANG]} between two AI hosts:
-- {HOST_A}: curious, warm, asks the questions listeners would ask, uses concrete everyday analogies.
-- {HOST_B}: sharp practitioner, explains with real industry examples (manufacturing, ports, ERP/SAP, quality, maintenance).
+{hosts}
 
 Topic: {topic}
-Rachid's own notes and angle (the core of the episode; attribute them as "Rachid's take" or "Rachid's experience"):
+{notes_label}:
 {notes or "(none - build a strong practitioner angle yourself)"}
 
 Make it sound HUMAN:
