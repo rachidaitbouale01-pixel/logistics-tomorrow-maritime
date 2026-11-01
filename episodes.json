@@ -1,1 +1,16 @@
-{"episodes": []}
+{
+  "episodes": [
+    {
+      "id": "ep001-1793540016",
+      "number": 1,
+      "topic": "Red Sea and Suez: what a chokepoint crisis really costs",
+      "title": "Ep. 1 | Red Sea Crisis: What Chokepoints Really Cost",
+      "description": "When shipping diverts around Africa, extra fuel is only the tip of the iceberg. Rachid Ait Bouale's research reveals how longer transits wreck vessel rotations, trap container equipment, and shatter MRP schedules in enterprise supply chains. Discover why mapping chokepoint exposure before disruption strikes is the ultimate competitive advantage. If you work in shipping, ports or freight, connect with Rachid on LinkedIn to share what's disrupting your operations. | AI-voiced episode, created and curated by Rachid Ait Bouale.",
+      "audio": "episodes/ep001.mp3",
+      "cover": "episodes/ep001.png",
+      "bytes": 5885037,
+      "duration": 490,
+      "pubDate": "Sun, 01 Nov 2026 13:33:36 +0000"
+    }
+  ]
+}
