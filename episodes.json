@@ -1,16 +1,1 @@
-{
-  "episodes": [
-    {
-      "id": "ep001-1793529568",
-      "number": 1,
-      "topic": "Why most production plans fail before they reach the shop floor: the hidden role of master data in SAP",
-      "title": "Ep. 1 | Why Production Plans Fail Before the Shop Floor",
-      "description": "Ever wonder why a production schedule looks completely green in SAP, yet the assembly line halts by mid-morning? In this premiere episode of Logistics Tomorrow, Alex and Sara unpack how corrupted master data tricks Material Requirements Planning into confident failure. Learn the operational warning signs and Rachid Ait Bouale's field-tested method for auditing MRP views and establishing data ownership. Got a story about this from your own plant or warehouse? Message Rachid Ait Bouale on LinkedIn. | AI-voiced episode, created and curated by Rachid Ait Bouale.",
-      "audio": "episodes/ep001.mp3",
-      "cover": "episodes/ep001.png",
-      "bytes": 8394381,
-      "duration": 699,
-      "pubDate": "Sun, 01 Nov 2026 10:39:28 +0000"
-    }
-  ]
-}
+{"episodes": []}
