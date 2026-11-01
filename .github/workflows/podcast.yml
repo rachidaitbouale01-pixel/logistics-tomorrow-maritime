@@ -2,7 +2,7 @@ name: Publish AI podcast episode
 
 on:
   schedule:
-    - cron: "0 6 * * 2"   # every Tuesday 06:00 UTC = 07:00 Morocco
+    - cron: "0 6 * * 5"   # every Friday 06:00 UTC = 07:00 Morocco
   workflow_dispatch:
 
 permissions:
@@ -58,6 +58,7 @@ jobs:
           COVER_STYLE: ${{ vars.COVER_STYLE }}
           BRAND_COLOR: ${{ vars.BRAND_COLOR }}
           LOCK_VOICES: ${{ vars.LOCK_VOICES }}
+          HOST_B_IS_CREATOR: ${{ vars.HOST_B_IS_CREATOR }}
           LINK_LINKEDIN: ${{ vars.LINK_LINKEDIN }}
           LINK_BEEHIIV: ${{ vars.LINK_BEEHIIV }}
           LINK_SUBSTACK: ${{ vars.LINK_SUBSTACK }}
