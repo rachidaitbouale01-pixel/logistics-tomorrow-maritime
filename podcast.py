@@ -150,6 +150,10 @@ Make it sound HUMAN:
 - Opening: {HOST_A} welcomes listeners to "{TITLE}" and says it is produced by Rachid Ait Bouale.
 - Closing: quick recap of 3 takeaways, then: "{CTA}"
 - About {words} words. Be accurate; never invent statistics, company names or quotes. If uncertain, say so.
+- Attribution: only present as Rachid's view what is in the notes above, and call it his view, take or experience.
+  Never write "Rachid's research reveals/shows/proves" or attribute findings, studies or data to him unless the notes
+  explicitly describe that research. General industry knowledge must be presented as general knowledge, not as his.
+  This applies to the dialogue AND to the show-notes description.
 - No sound effects, stage directions, emojis or markdown.
 
 Return ONLY JSON:
