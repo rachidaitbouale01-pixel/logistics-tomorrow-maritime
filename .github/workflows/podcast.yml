@@ -1,0 +1,91 @@
+name: Publish AI podcast episode
+
+on:
+  schedule:
+    - cron: "0 6 * * 2"   # every Tuesday 06:00 UTC = 07:00 Morocco
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: podcast
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg and fonts
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Generate episode
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SHEET_CSV_URL: ${{ secrets.SHEET_CSV_URL }}
+          BASE_URL: ${{ vars.BASE_URL }}
+          PODCAST_LANG: ${{ vars.PODCAST_LANG }}
+          PODCAST_TITLE: ${{ vars.PODCAST_TITLE }}
+          PODCAST_AUTHOR: ${{ vars.PODCAST_AUTHOR }}
+          PODCAST_EMAIL: ${{ vars.PODCAST_EMAIL }}
+          PODCAST_DESCRIPTION: ${{ vars.PODCAST_DESCRIPTION }}
+          PODCAST_CATEGORY: ${{ vars.PODCAST_CATEGORY }}
+          PODCAST_CTA: ${{ vars.PODCAST_CTA }}
+          CREATOR_BIO: ${{ vars.CREATOR_BIO }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}
+          GEMINI_VOICE_A: ${{ vars.GEMINI_VOICE_A }}
+          GEMINI_VOICE_B: ${{ vars.GEMINI_VOICE_B }}
+          HOST_A: ${{ vars.HOST_A }}
+          HOST_B: ${{ vars.HOST_B }}
+          EPISODE_MINUTES: ${{ vars.EPISODE_MINUTES }}
+          USE_AI_COVER: ${{ vars.USE_AI_COVER }}
+          COVER_STYLE: ${{ vars.COVER_STYLE }}
+          BRAND_COLOR: ${{ vars.BRAND_COLOR }}
+          LOCK_VOICES: ${{ vars.LOCK_VOICES }}
+          LINK_LINKEDIN: ${{ vars.LINK_LINKEDIN }}
+          LINK_BEEHIIV: ${{ vars.LINK_BEEHIIV }}
+          LINK_SUBSTACK: ${{ vars.LINK_SUBSTACK }}
+          LINK_SPOTIFY: ${{ vars.LINK_SPOTIFY }}
+          LINK_APPLE: ${{ vars.LINK_APPLE }}
+          LINK_YOUTUBE: ${{ vars.LINK_YOUTUBE }}
+        run: python podcast.py
+
+      - name: Commit and publish
+        run: |
+          git config user.name "podcast-bot"
+          git config user.email "podcast-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing new"
+          else
+            git commit -m "New episode $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Prepare website
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4

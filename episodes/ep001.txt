@@ -1,0 +1,182 @@
+Why Production Plans Fail Before the Shop Floor
+
+Ever wonder why a production schedule looks completely green in SAP, yet the assembly line halts by mid-morning? In this premiere episode of Logistics Tomorrow, Alex and Sara unpack how corrupted master data tricks Material Requirements Planning into confident failure. Learn the operational warning signs and Rachid Ait Bouale's field-tested method for auditing MRP views and establishing data ownership. Got a story about this from your own plant or warehouse? Message Rachid Ait Bouale on LinkedIn.
+
+Alex: Welcome to Logistics Tomorrow, the show where we tear into the real-world mechanics of supply chains, manufacturing, and enterprise systems. I am Alex, and this podcast is produced and curated by Rachid Ait Bouale, an SAP S/4HANA consultant and supply chain researcher.
+
+Sara: And I am Sara. Today we are diving straight into a problem that quietly bleeds millions out of manufacturing plants every single day.
+
+Alex: Picture this: your high-end enterprise system runs overnight, the dashboard shows completely green across the board, and by ten in the morning, the shop floor manager is screaming because Line Three has completely stopped.
+
+Sara: It happens constantly. The system says you have parts, the schedule looks mathematically flawless, but out in the plant, workers are staring at empty bins.
+
+Alex: Wait, really? If the algorithm is doing the exact math it was programmed to do, why does the plan collapse the moment it touches reality?
+
+Sara: Because the algorithm is an obedient calculator. It does not know what your factory actually looks like; it only knows what your master data tells it.
+
+Alex: So if the numbers fed into it are slightly off, it just calculates nonsense with absolute precision?
+
+Sara: Precisely. Rachid often points out that Material Requirements Planning will plan with absolute confidence, run every calculation down to the second, and still be completely wrong.
+
+Alex: That is terrifying. It is like trusting a GPS that insists there is an open bridge ahead, right up until your car drives into a lake.
+
+Sara: That is an accurate analogy. The system is not broken. The data describing reality is broken.
+
+Alex: Let us break down what that data actually is. When we say master data in a system like SAP, what are the pieces that make or break a schedule?
+
+Sara: The foundation comes down to three main pillars: bills of materials, routings, and work center parameters. If any of those three have errors, your schedule is fictional.
+
+Alex: Start with the bill of materials, the BOM. That is essentially the recipe for the product, right?
+
+Sara: Exactly. It lists every component, sub-assembly, raw material, and quantity needed to build one finished unit.
+
+Alex: How does that go wrong? If you are making a pump, you know how many bolts it needs.
+
+Sara: You would be surprised. Engineering might release an engineering change notice to switch from a grade-five bolt to a grade-eight bolt, but nobody updates the production BOM in SAP.
+
+Alex: So the system orders the old bolts?
+
+Sara: Or worse, the system thinks the old bolts in stock can satisfy demand. The assemblers get to the station, realize the bolts cannot take the torque spec, and stop the line.
+
+Alex: Ouch. What about scrap rates? Does that live in the BOM too?
+
+Sara: Yes, component scrap. If your stamping machine routinely damages three percent of sheet metal blanks, but the BOM says scrap is zero, MRP only orders the exact net quantity.
+
+Alex: Which means halfway through the batch, you run out of metal.
+
+Sara: Every single time. And then everyone blames the purchasing team for not ordering enough material, when purchasing bought exactly what MRP told them to buy.
+
+Alex: That brings us to the second pillar you mentioned: routings. If the BOM is the recipe, the routing is the cooking instructions, right?
+
+Sara: Yes. It defines the operations: cutting, welding, painting, packaging, and critically, how long each step takes.
+
+Alex: How do routings usually get distorted?
+
+Sara: Often they are set during initial product development and never touched again. An engineer assumed an operation takes four minutes, but on the floor, the tooling is worn out, so it takes seven.
+
+Alex: Wait, so SAP thinks the machine can produce fifteen pieces an hour, but it can only produce eight?
+
+Sara: Exactly. So the system stacks work orders back-to-back assuming a four-minute cycle. By Wednesday, the work center has a massive physical backlog, while SAP still thinks the job will finish on time.
+
+Alex: That is wild. And let me guess, setup times are just as dangerous.
+
+Sara: Setup times are usually where schedules fall apart first. If the master data says changeover between product A and product B takes thirty minutes, but maintenance knows that die takes two hours to swap, you lose an hour and a half before production even starts.
+
+Alex: Multiply that across ten work centers over a week, and your entire shop floor schedule is pure fantasy.
+
+Sara: It is. And this brings us straight to the third pillar: work center capacity. Does the system know how many shifts you actually run, what the efficiency factor is, and when planned maintenance happens?
+
+Alex: Maintenance! We cannot overlook that. If preventive maintenance is scheduled on a CNC machine for Thursday morning, does the production schedule know that?
+
+Sara: In a poorly integrated setup, absolutely not. The production planner schedules a rush order on the CNC, while the maintenance tech walks up with a wrench to take the machine offline.
+
+Alex: And then they stand there arguing over who has priority.
+
+Sara: Always. And that collision leads us directly to the biggest behavioral symptom in the plant.
+
+Alex: What symptom is that?
+
+Sara: Shadow planning. Planners dumping SAP data into Excel and building their own secret schedules on their desktop.
+
+Alex: Oh, the spreadsheet under the desk! I see this in almost every company I talk to. Why do planners do that instead of fixing the system?
+
+Sara: Because they have learned from bitter experience that SAP's output cannot be trusted. If following the system gets them yelled at by production supervisors, they will create their own reality.
+
+Alex: It is an act of self-defense.
+
+Sara: It really is. In his field consulting, Rachid frequently finds planners spending three hours every morning manually adjusting dates, lot sizes, and safety stocks in an offline sheet.
+
+Alex: Think about the irony there. The company spends millions on an advanced ERP system, and the entire manufacturing operation runs off an unbacked-up spreadsheet called Schedule_Final_v3_real.xlsx.
+
+Sara: And when that planner goes on vacation, the whole plant is blind.
+
+Alex: Because all the real intelligence, the buffer heuristics and tribal knowledge, lives in their head and their spreadsheet, not in the system.
+
+Sara: Exactly. Rachid calls this the trust gap. When master data is corrupt, people stop trusting the ERP. And once trust is lost, system discipline completely breaks down.
+
+Alex: Let us talk about lot sizes for a minute. You mentioned lot sizing earlier, how does that impact this?
+
+Sara: Lot sizing determines how the system bundles demand. Do you order lot-for-lot, exact quantities as needed? Or do you have fixed lot sizes, like always ordering a full pallet of five hundred units?
+
+Alex: I can see how that goes sideways. What happens if the lot size is set too large?
+
+Sara: You choke the warehouse with working capital, tie up cash, and block floor space. But if it is set too small, you force the shop floor into constant, unnecessary changeovers.
+
+Alex: And if minimum order quantities or rounding values are wrong, you are either ordering excess inventory or facing perpetual micro-shortages.
+
+Sara: Right. Or consider lead times. In the material master, you have planned delivery time for purchased parts, and in-house production time for manufactured parts.
+
+Alex: Let me guess: someone put in two weeks for a supplier five years ago, but the supplier now ships from overseas and takes eight weeks?
+
+Sara: Exactly. The system generates purchase requisitions two weeks before the assembly date. The buyer converts it immediately, but the supplier says, wait, my lead time is sixty days.
+
+Alex: And boom, your production line is starved.
+
+Sara: And the dashboard still showed green until the day the order was due. That is why shortages appear despite clean plans.
+
+Alex: So how do we fix this? What is Rachid's take on turning this around before or even after a go-live?
+
+Sara: Rachid's methodology focuses on two critical pillars: rigorous pre-go-live audits of MRP views, and clear, enforceable field-level ownership.
+
+Alex: Let us break down that first one. An audit of MRP views. What specifically are you auditing?
+
+Sara: In SAP, you have four distinct MRP views in the material master. Rachid emphasizes scrutinizing four key parameters across those views: MRP type, lot sizing procedure, lead times, and safety stock calculation.
+
+Alex: Take MRP type. What is the common trap there?
+
+Sara: Using deterministic planning like PD for materials that behave like reorder point items, or setting something to ND, no planning, by accident during a data migration.
+
+Alex: If a critical part is set to ND, the system simply ignores demand for it?
+
+Sara: It literally acts like the part does not exist. No requirements, no orders, nothing. You find out when the bin is empty.
+
+Alex: What about safety stock? Is that just a static number people guess at?
+
+Sara: In most troubled plants, yes. Someone entered fifty units during the initial implementation, and nobody has touched it since, even though sales volume tripled.
+
+Alex: So Rachid's approach is to audit these fields systematically rather than assuming the migration team got them right.
+
+Sara: Yes. Run exception reports. Look for active materials with zero lead times, materials with missing lot sizes, or BOMs without valid routing links. Clean the baseline before flipping the switch.
+
+Alex: That makes complete sense. But what about the second pillar? Field-level ownership. That sounds like an organizational challenge, not a technical one.
+
+Sara: It is entirely organizational. When Rachid asks a plant team, who owns the planned delivery time field in MRP 2, what answer do you think he gets?
+
+Alex: Everyone points at someone else. Purchasing points to planning, planning points to IT, IT points back to the plant.
+
+Sara: Every single time. If everyone owns a field, nobody owns it.
+
+Alex: So how do you define real ownership?
+
+Sara: You map every single field on the MRP screens to a specific job role, not a department, a role. For example, the buyer owns planned delivery time and purchasing group. The production planner owns lot size and scheduling margin key.
+
+Alex: And the industrial engineer owns base quantity, setup time, and machine run time in the routing.
+
+Sara: Exactly. And if a supplier renegotiates contracts and lead time shifts from four weeks to six weeks, it is the explicit responsibility of that buyer to update SAP, not just keep an email in their inbox.
+
+Alex: That sounds like a governance framework. What happens when someone needs to change a parameter? Can anyone just open SAP and edit a material?
+
+Sara: In a healthy organization, no. You use authorization controls and workflow approvals. If changing a safety stock impacts two hundred thousand dollars of working capital, a junior planner should not be able to do that unreviewed.
+
+Alex: It really comes down to respecting the data as a real asset, not just clerical overhead.
+
+Sara: Rachid has a motto that sums this up perfectly: A perfect plan built on bad data is still a bad plan.
+
+Alex: That hits home. You can implement the fanciest advanced planning optimizer, integrate machine learning, use real-time scheduling algorithms, but if the machine speed says ten pieces per hour when it actually runs six, the fancy algorithm just produces sophisticated failure.
+
+Sara: Precisely. Master data is the physics of your system. You cannot program your way around the laws of physics.
+
+Alex: Let us summarize this for our listeners. If someone is managing a plant, planning lines, or implementing SAP right now, what are the three concrete takeaways they should remember?
+
+Sara: First, watch for shadow planning. If your team is running production off Excel sheets, stop punishing the planners and start investigating your master data errors.
+
+Alex: Second, audit your MRP parameters regularly. Check your MRP types, lead times, lot sizing rules, and scrap percentages against shop floor reality before go-live, and keep auditing them post-go-live.
+
+Sara: And third, assign strict ownership to every master data field. If a specific role is not accountable for keeping that field accurate, the data will decay, and your plan will fail.
+
+Alex: Brilliant. Now, we want to hear from you. Got a story about this from your own plant or warehouse? Message Rachid Ait Bouale on LinkedIn. The best ones might become a future episode.
+
+Sara: Until next time, keep your data clean and your lines running.
+
+Alex: Thanks for listening to Logistics Tomorrow.
+
